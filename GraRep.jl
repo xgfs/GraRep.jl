@@ -18,14 +18,15 @@ end
 
 function GetEmbs(network, ndim, nstep)
     n = size(network, 1);
+	Ak = copy(network)
     embs = zeros(Float32, n, ndim*nstep);
     println("step 1")
-    embs[:,1:ndim] = GraRep(network, ndim)
+    embs[:,1:ndim] = GraRep(Ak, ndim)
     for i =2:nstep    
         println("multiplying mat #", i)
-        network = network*network
+        Ak = Ak*network
         println("step #", i)
-        embs[:,1+ndim*i-ndim:ndim*i] = GraRep(network, ndim)
+        embs[:,1+ndim*i-ndim:ndim*i] = GraRep(Ak, ndim)
     end
     embs
 end
